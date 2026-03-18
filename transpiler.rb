@@ -96,15 +96,15 @@ class Transpiler < Prism::Visitor
       left = expression(node.receiver)
       right = expression(args.first)
       "Ruva.#{MATH_OPS_NAME[op_idx]}(#{left}, #{right})"
-
     elsif RUVA_OPS.include?(name)
-      args_str = args.map { |arg| expression(arg) }.join(", ")
-      "Ruva.#{name}(#{args_str})"
-
+      "Ruva.#{name}(#{build_args_str(args)})"
     else
-      args_str = args.map { |arg| expression(arg) }.join(", ")
-      "#{name}(#{args_str})"
+      "#{name}(#{build_args_str(args)})"
     end
+  end
+
+  def build_args_str(args)
+    args.map { |arg| expression(arg) }.join(@emitter.separator_str)
   end
 
   def expression(node)
