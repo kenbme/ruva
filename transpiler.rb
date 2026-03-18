@@ -88,7 +88,7 @@ class Transpiler < Prism::Visitor
     name = node.name
     args = node.arguments&.arguments || []
 
-    args_str = args.map { |arg| expression(arg) }.join(", ")
+    args_str = args.map { |arg| expression(arg) }.join(@emitter.separator_str)
 
     if RUVA_OPS.include?(name)
       @emitter.ruva_call(name, args_str)
@@ -115,7 +115,7 @@ class Transpiler < Prism::Visitor
       else
         name = node.name
         args = node.arguments&.arguments || []
-        args_str = args.map { |arg| expression(arg) }.join(", ")
+        args_str = args.map { |arg| expression(arg) }.join(@emitter.separator_str)
         @emitter.local_call_str(name, args_str)
       end
     when Prism::LocalVariableReadNode

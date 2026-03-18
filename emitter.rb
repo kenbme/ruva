@@ -82,7 +82,7 @@ class Emitter
   end
 
   def ruva_math(op, left, right)
-    emit "Ruva.#{op}(#{left}, #{right});"
+    emit "Ruva.#{op}(#{left}#{separator_str}#{right});"
   end
 
   def class_call(clazz, name, args_str)
@@ -94,10 +94,14 @@ class Emitter
   end
 
   def ruva_math_str(op, left, right)
-    "Ruva.#{op}(#{left}, #{right})"
+    "Ruva.#{op}(#{left}#{separator_str}#{right})"
   end
 
   def local_call_str(op, args_str)
     "#{op}(#{args_str})"
+  end
+
+  def separator_str
+    ","
   end
 end
