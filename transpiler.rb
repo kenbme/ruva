@@ -90,6 +90,14 @@ class Transpiler < Prism::Visitor
     @emitter.emit("#{expression(node)};")
   end
 
+  def visit_array_node(node)
+    @emitter.emit("#{expression(node)};")
+  end
+
+  def visit_hash_node(node)
+    @emitter.emit("#{expression(node)};")
+  end
+
   def build_call_expression(node)
     name = node.name
     args = node.arguments&.arguments || []
