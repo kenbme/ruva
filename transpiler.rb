@@ -124,6 +124,12 @@ class Transpiler < Prism::Visitor
     when Prism::TrueNode
       true
 
+    when Prism::FalseNode
+      false
+
+    when Prism::NilNode
+      "null"
+
     when Prism::CallNode
       build_call_expression(node)
 

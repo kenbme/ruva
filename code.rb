@@ -27,6 +27,12 @@ def main
     break
   end
 
+  while false
+  end
+
+  while nil
+  end
+
   2 + 2
 
   c = "aaa"
