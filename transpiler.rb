@@ -2,8 +2,9 @@ require "./emitter"
 
 class Transpiler < Prism::Visitor
   def initialize
+    @ruva_class = "Ruva"
     @vars = Set.new
-    @emitter = Emitter.new
+    @emitter = Emitter.new(@ruva_class)
   end
 
   def result
@@ -106,7 +107,7 @@ class Transpiler < Prism::Visitor
         left = expression(node.receiver)
         right = expression(node.arguments.arguments.first)
         op_name = MATH_OPS_NAME[op_idx]
-        "Ruva.#{op_name}(#{left}, #{right})"
+        "#{@ruva_class}.#{op_name}(#{left}, #{right})"
       else
         name = node.name
         args = node.arguments&.arguments || []

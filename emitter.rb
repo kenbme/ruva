@@ -1,9 +1,10 @@
 class Emitter
   attr_reader :output
 
-  def initialize
+  def initialize(ruva_class)
     @output = ""
     @indent = 0
+    @ruva_class = ruva_class
   end
 
   def emit(line)
@@ -69,7 +70,7 @@ class Emitter
   end
 
   def start_while(condition)
-    emit "while (Ruva.truthy(#{condition}))"
+    emit "while (#{@ruva_class}.truthy(#{condition}))"
     start_block
   end
 
@@ -78,7 +79,7 @@ class Emitter
   end
 
   def ruva_call(name, args_list)
-    class_call("Ruva", name, args_list)
+    class_call(@ruva_class, name, args_list)
   end
 
   def class_call(clazz, name, args_list)
