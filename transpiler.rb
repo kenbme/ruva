@@ -85,20 +85,25 @@ class Transpiler < Prism::Visitor
   RUVA_OPS = %i[puts gets]
 
   def visit_call_node(node)
+    @emitter.emit("#{expression(node)};")
+  end
+
+  def build_call_expression(node)
     name = node.name
     args = node.arguments&.arguments || []
 
-    args_str = args.map { |arg| expression(arg) }.join(@emitter.separator_str)
-
-    if RUVA_OPS.include?(name)
-      @emitter.ruva_call(name, args_str)
-    elsif (op_idx = MATH_OPS.index(node.name))
+    if (op_idx = MATH_OPS.index(name))
       left = expression(node.receiver)
-      right = expression(node.arguments.arguments.first)
-      op_name = MATH_OPS_NAME[op_idx]
-      @emitter.ruva_math(op_name, left, right)
+      right = expression(args.first)
+      "Ruva.#{MATH_OPS_NAME[op_idx]}(#{left}, #{right})"
+
+    elsif RUVA_OPS.include?(name)
+      args_str = args.map { |arg| expression(arg) }.join(", ")
+      "Ruva.#{name}(#{args_str})"
+
     else
-      @emitter.local_call(name, args_str)
+      args_str = args.map { |arg| expression(arg) }.join(", ")
+      "#{name}(#{args_str})"
     end
   end
 
@@ -106,24 +111,19 @@ class Transpiler < Prism::Visitor
     case node
     when Prism::IntegerNode
       node.value
-    when Prism::CallNode
-      if (op_idx = MATH_OPS.index(node.name))
-        left = expression(node.receiver)
-        right = expression(node.arguments.arguments.first)
-        op_name = MATH_OPS_NAME[op_idx]
-        @emitter.ruva_math_str(op_name, left, right)
-      else
-        name = node.name
-        args = node.arguments&.arguments || []
-        args_str = args.map { |arg| expression(arg) }.join(@emitter.separator_str)
-        @emitter.local_call_str(name, args_str)
-      end
-    when Prism::LocalVariableReadNode
-      node.name
-    when Prism::TrueNode
-      true
+
     when Prism::StringNode
       "\"#{node.content}\""
+
+    when Prism::LocalVariableReadNode
+      node.name
+
+    when Prism::TrueNode
+      true
+
+    when Prism::CallNode
+      build_call_expression(node)
+
     else
       p node
       "/* unsupported */"
