@@ -46,7 +46,7 @@ def main
 
   [1, 2]
 
-  { a: 1, b: 2 }
+  { a: 1, b: 2, c: {d: 5}}
 
   daaaa = gets
 end
