@@ -116,19 +116,19 @@ class Transpiler < Prism::Visitor
       node.value
 
     when Prism::StringNode
-      "\"#{node.content}\""
+      "Ruva.string(\"#{node.content}\")"
 
     when Prism::LocalVariableReadNode
       node.name
 
     when Prism::TrueNode
-      true
+      "Ruva.true()"
 
     when Prism::FalseNode
-      false
+      "Ruva.false()"
 
     when Prism::NilNode
-      "null"
+      "Ruva.nil()"
 
     when Prism::CallNode
       build_call_expression(node)
