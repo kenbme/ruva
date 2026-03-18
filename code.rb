@@ -15,7 +15,7 @@ def main
   abacate()
 
   if true
-    puts(a)
+    puts(a, 2)
   elsif true
     puts(a)
   else

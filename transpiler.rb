@@ -85,13 +85,23 @@ class Transpiler < Prism::Visitor
     name = node.name
     args = node.arguments&.arguments || []
 
-    args_list = args.map { |arg| expression(arg) }
-
     if RUVA_OPS.include?(name)
-      @emitter.ruva_call(name, args_list)
+      @emitter.ruva_call(name)
     else
-      @emitter.local_call(name, args_list)
+      @emitter.local_call(name)
     end
+
+    i = 0
+    while i < args.size
+      a = expression(args[i])
+      @emitter.emit_expression(a)
+      if i + 1 != args.size
+        @emitter.separator
+      end
+      i += 1
+    end
+
+    @emitter.close_call
   end
 
   MATH_OPS = %i[+ - * / % **]

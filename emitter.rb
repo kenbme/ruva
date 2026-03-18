@@ -77,15 +77,27 @@ class Emitter
     end_block
   end
 
-  def ruva_call(name, args_list)
-    class_call("Ruva", name, args_list)
+  def ruva_call(name)
+    class_call("Ruva", name)
   end
 
-  def class_call(clazz, name, args_list)
-    emit "#{clazz}.#{name}(#{args_list.join(",")});"
+  def class_call(clazz, name)
+    emit "#{clazz}.#{name}("
   end
 
-  def local_call(name, args_list)
-    emit "#{name}(#{args_list.join(",")});"
+  def local_call(name)
+    emit "#{name}("
+  end
+
+  def close_call
+    emit ");"
+  end
+
+  def emit_expression(expr)
+    emit expr.to_s
+  end
+
+  def separator
+    emit ", "
   end
 end
