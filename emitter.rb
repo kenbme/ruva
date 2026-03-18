@@ -21,6 +21,11 @@ class Emitter
   end
 
   def start_def(name)
+    emit "public RuvaObject #{name}()"
+    start_block
+  end
+
+  def start_self_def(name)
     emit "public static RuvaObject #{name}()"
     start_block
   end

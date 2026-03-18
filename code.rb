@@ -2,6 +2,10 @@ def abacate
   return 2
 end
 
+def self.abacateiro
+  return "aaaaaa"
+end
+
 def main
   a = 2 + 2 + 2
   a = 2 - 2

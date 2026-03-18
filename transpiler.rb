@@ -15,7 +15,15 @@ class Transpiler < Prism::Visitor
   end
 
   def visit_def_node(node)
-    @emitter.start_def(node.name)
+    name = node.name
+    receiver = node.receiver
+
+    if receiver.is_a?(Prism::SelfNode)
+      @emitter.start_self_def(name)
+    else
+      @emitter.start_def(name)
+    end
+
     node.body&.accept(self)
     @emitter.end_def
   end
