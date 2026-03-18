@@ -133,6 +133,10 @@ class Transpiler < Prism::Visitor
     when Prism::CallNode
       build_call_expression(node)
 
+    when Prism::ArrayNode
+      elements = node.elements.map { |el| expression(el) }.join(", ")
+      "Ruva.array(#{elements})"
+
     else
       p node
       "/* unsupported */"

@@ -38,4 +38,8 @@ def main
   c = "aaa"
 
   "bbbb"
+
+  dd = []
+  bb = [1, 2, 3, "s"]
+  bbb = [1, [2]]
 end
