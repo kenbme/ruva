@@ -95,11 +95,11 @@ class Transpiler < Prism::Visitor
     if (op_idx = MATH_OPS.index(name))
       left = expression(node.receiver)
       right = expression(args.first)
-      "Ruva.#{MATH_OPS_NAME[op_idx]}(#{left}, #{right})"
+      @emitter.ruva_math_str(MATH_OPS_NAME[op_idx], left, right)
     elsif RUVA_OPS.include?(name)
-      "Ruva.#{name}(#{build_args_str(args)})"
+      @emitter.ruva_call_str(name, build_args_str(args))
     else
-      "#{name}(#{build_args_str(args)})"
+      @emitter.local_call_str(name, build_args_str(args))
     end
   end
 
