@@ -1,44 +1,39 @@
+require "./emitter"
+
 class Transpiler < Prism::Visitor
   def initialize
-    @output = ""
-    @indent = 0
     @vars = Set.new
-  end
-
-  def emit(line)
-    @output << ("  " * @indent) + line + "\n"
+    @emitter = Emitter.new
   end
 
   def result
-    @output
+    @emitter.output
   end
 
   def visit_def_node(node)
-    name = node.name == :main ? "ruva_main" : node.name
-    emit "public static RuvaObject #{name}() {"
-    @indent += 1
+    name = node.name == :main ? "ruva_main" : node.name.to_s
+    @emitter.start_def(name)
     node.body&.accept(self)
-    @indent -= 1
-    emit "}"
+    @emitter.end_def
   end
 
   def visit_local_variable_write_node(node)
     name = node.name
     value = node.value
     if @vars.include?(name)
-      emit "#{name} = #{expression(value)};"
+      @emitter.var(name, expression(value))
     else
       @vars << name
-      emit "var #{name} = #{expression(value)};"
+      @emitter.init_var(name, expression(value))
     end
   end
 
   def visit_return_node(node)
     if node.arguments && node.arguments.arguments.any?
       value = node.arguments.arguments.first
-      emit "return #{expression(value)};"
+      @emitter.return(expression(value))
     else
-      emit "return;"
+      @emitter.return
     end
   end
 
@@ -50,16 +45,14 @@ class Transpiler < Prism::Visitor
     condition = expression(node.predicate)
 
     if first
-      emit "if (#{condition}) {"
+      @emitter.start_if(condition)
     else
-      emit "else if (#{condition}) {"
+      @emitter.start_elsif(condition)
     end
 
-    @indent += 1
     node.statements&.accept(self)
-    @indent -= 1
 
-    emit "}"
+    @emitter.end_if
 
     if node.consequent
       if node.consequent.is_a?(Prism::IfNode)
@@ -67,11 +60,9 @@ class Transpiler < Prism::Visitor
         emit_if_chain(node.consequent, first: false)
       else
         # else
-        emit "else {"
-        @indent += 1
+        @emitter.start_else
         node.consequent.accept(self)
-        @indent -= 1
-        emit "}"
+        @emitter.end_else
       end
     end
   end
@@ -79,17 +70,13 @@ class Transpiler < Prism::Visitor
   def visit_while_node(node)
     condition = expression(node.predicate)
 
-    emit "while (Ruva.truthy(#{condition})) {"
-    @indent += 1
-
+    @emitter.start_while(condition)
     node.statements&.accept(self)
-
-    @indent -= 1
-    emit "}"
+    @emitter.end_while
   end
 
   def visit_break_node(node)
-    emit "break;"
+    @emitter.break
   end
 
   RUVA_OPS = %i[puts gets]
@@ -101,9 +88,9 @@ class Transpiler < Prism::Visitor
     args_str = args.map { |arg| expression(arg) }.join(", ")
 
     if RUVA_OPS.include?(name)
-      emit "Ruva.puts(#{args_str});"
+      @emitter.emit "Ruva.puts(#{args_str});"
     else
-      emit "#{name}(#{args_str});"
+      @emitter.emit "#{name}(#{args_str});"
     end
   end
 
