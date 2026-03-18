@@ -3,6 +3,7 @@ require "./emitter"
 class Transpiler < Prism::Visitor
   MATH_OPS = %i[+ - * / % **].freeze
   MATH_OPS_NAME = %w[add sub mul div mod pow].freeze
+  RUVA_OPS = %i[puts gets].freeze
 
   def initialize
     @vars = Set.new
@@ -81,8 +82,6 @@ class Transpiler < Prism::Visitor
   def visit_break_node(node)
     @emitter.break
   end
-
-  RUVA_OPS = %i[puts gets]
 
   def visit_call_node(node)
     @emitter.emit("#{expression(node)};")
