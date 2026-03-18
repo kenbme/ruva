@@ -39,7 +39,7 @@ class Emitter
   end
 
   def start_elsif(condition)
-    emit "else if (#{condition})"
+    emit "else if (Ruva.truthy(#{condition}))"
     start_block
   end
 
