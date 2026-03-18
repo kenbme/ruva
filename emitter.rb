@@ -30,7 +30,7 @@ class Emitter
   end
 
   def start_if(condition)
-    emit "if (#{condition})"
+    emit "if (Ruva.truthy(#{condition}))"
     start_block
   end
 
