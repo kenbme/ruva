@@ -76,4 +76,16 @@ class Emitter
   def end_while
     end_block
   end
+
+  def ruva_call(name, args_list)
+    class_call("Ruva", name, args_list)
+  end
+
+  def class_call(clazz, name, args_list)
+    emit "#{clazz}.#{name}(#{args_list.join(",")});"
+  end
+
+  def local_call(name, args_list)
+    emit "#{name}(#{args_list.join(",")});"
+  end
 end

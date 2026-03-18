@@ -85,12 +85,12 @@ class Transpiler < Prism::Visitor
     name = node.name
     args = node.arguments&.arguments || []
 
-    args_str = args.map { |arg| expression(arg) }.join(", ")
+    args_list = args.map { |arg| expression(arg) }
 
     if RUVA_OPS.include?(name)
-      @emitter.emit "Ruva.puts(#{args_str});"
+      @emitter.ruva_call(name, args_list)
     else
-      @emitter.emit "#{name}(#{args_str});"
+      @emitter.local_call(name, args_list)
     end
   end
 
