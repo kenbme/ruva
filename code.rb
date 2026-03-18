@@ -23,7 +23,7 @@ def main
   end
 
   while true
-    puts(b)
+    b = abacate()
     break
   end
 end

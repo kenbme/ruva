@@ -92,13 +92,15 @@ class Transpiler < Prism::Visitor
     emit "break;"
   end
 
+  RUVA_OPS = %i[puts gets]
+
   def visit_call_node(node)
     name = node.name
     args = node.arguments&.arguments || []
 
     args_str = args.map { |arg| expression(arg) }.join(", ")
 
-    if name == :puts
+    if RUVA_OPS.include?(name)
       emit "Ruva.puts(#{args_str});"
     else
       emit "#{name}(#{args_str});"
@@ -119,7 +121,10 @@ class Transpiler < Prism::Visitor
         op_name = MATH_OPS_NAME[op_idx]
         "Ruva.#{op_name}(#{left}, #{right})"
       else
-        "/* unsupported */"
+        name = node.name
+        args = node.arguments&.arguments || []
+        args_str = args.map { |arg| expression(arg) }.join(", ")
+        "#{name}(#{args_str})"
       end
     when Prism::LocalVariableReadNode
       node.name
