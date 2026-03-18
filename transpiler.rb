@@ -48,6 +48,29 @@ class Transpiler < Prism::Visitor
     end
   end
 
+  def visit_class_node(node)
+    name = constant_name(node.constant_path)
+
+    @emitter.start_class(name)
+
+    node.body&.accept(self)
+
+    @emitter.end_class
+  end
+
+  def constant_name(node)
+    case node
+    when Prism::ConstantReadNode
+      node.name.to_s
+
+    when Prism::ConstantPathNode
+      "#{constant_name(node.parent)}::#{node.name}"
+
+    else
+      raise "Unsupported constant path: #{node.class}"
+    end
+  end
+
   def visit_if_node(node)
     emit_if_chain(node)
   end

@@ -110,6 +110,15 @@ class Emitter
     "#{op}(#{args_str})"
   end
 
+  def start_class(name)
+    emit "public class #{name}"
+    start_block
+  end
+
+  def end_class
+    end_block
+  end
+
   def separator_str
     ","
   end
