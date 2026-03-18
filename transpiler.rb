@@ -1,6 +1,9 @@
 require "./emitter"
 
 class Transpiler < Prism::Visitor
+  MATH_OPS = %i[+ - * / % **].freeze
+  MATH_OPS_NAME = %w[add sub mul div mod pow].freeze
+
   def initialize
     @vars = Set.new
     @emitter = Emitter.new
@@ -98,9 +101,6 @@ class Transpiler < Prism::Visitor
       @emitter.local_call(name, args_str)
     end
   end
-
-  MATH_OPS = %i[+ - * / % **]
-  MATH_OPS_NAME = %w[add sub mul div mod pow]
 
   def expression(node)
     case node
