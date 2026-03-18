@@ -3,38 +3,53 @@ class Emitter
 
   def initialize
     @output = ""
+    @indent = 0
   end
 
   def emit(line)
-    @output << line + "\n"
+    @output <<("  " * @indent) + line + "\n"
+  end
+
+  def start_block
+    emit("{")
+    @indent += 1
+  end
+
+  def end_block
+    @indent -= 1
+    emit("}")
   end
 
   def start_def(name)
-    emit "public static RuvaObject #{name}() {"
+    emit "public static RuvaObject #{name}()"
+    start_block
   end
 
   def end_def
-    emit "}"
+    end_block
   end
 
   def start_if(condition)
-    emit "if (#{condition}) {"
+    emit "if (#{condition})"
+    start_block
   end
 
   def end_if
-    emit "}"
+    end_block
   end
 
   def start_elsif(condition)
-    emit "else if (#{condition}) {"
+    emit "else if (#{condition})"
+    start_block
   end
 
   def start_else
-    emit "else {"
+    emit "else"
+    start_block
   end
 
   def end_else
-    emit "}"
+    end_block
   end
 
   def break
@@ -54,10 +69,11 @@ class Emitter
   end
 
   def start_while(condition)
-    emit "while (Ruva.truthy(#{condition})) {"
+    emit "while (Ruva.truthy(#{condition}))"
+    start_block
   end
 
   def end_while
-    emit "}"
+    end_block
   end
 end
