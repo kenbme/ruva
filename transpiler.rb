@@ -106,12 +106,12 @@ class Transpiler < Prism::Visitor
         left = expression(node.receiver)
         right = expression(node.arguments.arguments.first)
         op_name = MATH_OPS_NAME[op_idx]
-        "Ruva.#{op_name}(#{left}, #{right})"
+        @emitter.ruva_math_str(op_name, left, right)
       else
         name = node.name
         args = node.arguments&.arguments || []
         args_str = args.map { |arg| expression(arg) }.join(", ")
-        "#{name}(#{args_str})"
+        @emitter.local_call_str(name, args_str)
       end
     when Prism::LocalVariableReadNode
       node.name

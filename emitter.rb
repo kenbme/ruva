@@ -88,4 +88,12 @@ class Emitter
   def local_call(name, args_str)
     emit "#{name}(#{args_str});"
   end
+
+  def ruva_math_str(op, left, right)
+    "Ruva.#{op}(#{left}, #{right})"
+  end
+
+  def local_call_str(op, args_str)
+    "#{op}(#{args_str})"
+  end
 end
