@@ -101,10 +101,7 @@ class Emitter
     emit ", "
   end
 
-  MATH_OPS_NAME = %w[add sub mul div mod pow].freeze
-
-  def math_call(op_idx, left, right)
-    op = MATH_OPS_NAME[op_idx]
+  def math_call(op, left, right)
     emit "Ruva.#{op}(#{left}, #{right})"
   end
 end
