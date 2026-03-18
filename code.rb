@@ -28,4 +28,6 @@ def main
   end
 
   2 + 2
+
+  c = "aaa"
 end

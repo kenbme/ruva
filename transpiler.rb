@@ -122,6 +122,8 @@ class Transpiler < Prism::Visitor
       node.name
     when Prism::TrueNode
       true
+    when Prism::StringNode
+      "\"#{node.content}\""
     else
       p node
       "/* unsupported */"
