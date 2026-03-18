@@ -42,4 +42,9 @@ def main
   dd = []
   bb = [1, 2, 3, "s"]
   bbb = [1, [2]]
+  dado = {aaaaaa: 2, daaaaa: 4}
+
+  [1, 2]
+
+  { a: 1, b: 2 }
 end

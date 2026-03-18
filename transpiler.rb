@@ -15,8 +15,7 @@ class Transpiler < Prism::Visitor
   end
 
   def visit_def_node(node)
-    name = node.name == :main ? "ruva_main" : node.name.to_s
-    @emitter.start_def(name)
+    @emitter.start_def(node.name)
     node.body&.accept(self)
     @emitter.end_def
   end
@@ -136,6 +135,17 @@ class Transpiler < Prism::Visitor
     when Prism::ArrayNode
       elements = node.elements.map { |el| expression(el) }.join(", ")
       "Ruva.array(#{elements})"
+
+    when Prism::SymbolNode
+      "Ruva.sym(#{"\"#{node.value}\""})"
+
+    when Prism::HashNode
+      pairs = node.elements.map do |assoc|
+        key = expression(assoc.key)
+        value = expression(assoc.value)
+        "#{key}, #{value}"
+      end.join(", ")
+      "Ruva.hash(#{pairs})"
 
     else
       p node
