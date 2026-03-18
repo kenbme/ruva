@@ -81,6 +81,10 @@ class Emitter
     class_call("Ruva", name, args_str)
   end
 
+  def ruva_math(op, left, right)
+    emit "Ruva.#{op}(#{left}, #{right});"
+  end
+
   def class_call(clazz, name, args_str)
     emit "#{clazz}.#{name}(#{args_str});"
   end

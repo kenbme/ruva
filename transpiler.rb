@@ -89,6 +89,11 @@ class Transpiler < Prism::Visitor
 
     if RUVA_OPS.include?(name)
       @emitter.ruva_call(name, args_str)
+    elsif (op_idx = MATH_OPS.index(node.name))
+      left = expression(node.receiver)
+      right = expression(node.arguments.arguments.first)
+      op_name = MATH_OPS_NAME[op_idx]
+      @emitter.ruva_math(op_name, left, right)
     else
       @emitter.local_call(name, args_str)
     end

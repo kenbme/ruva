@@ -26,4 +26,6 @@ def main
     b = abacate()
     break
   end
+
+  2 + 2
 end
