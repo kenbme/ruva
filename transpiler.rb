@@ -113,10 +113,10 @@ class Transpiler < Prism::Visitor
   def expression(node)
     case node
     when Prism::IntegerNode
-      node.value
+      "Ruva.int(#{node.value})"
 
     when Prism::StringNode
-      "Ruva.string(\"#{node.content}\")"
+      "Ruva.str(\"#{node.content}\")"
 
     when Prism::LocalVariableReadNode
       node.name
