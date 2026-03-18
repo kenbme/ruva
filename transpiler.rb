@@ -83,6 +83,10 @@ class Transpiler < Prism::Visitor
     @emitter.break
   end
 
+  def visit_string_node(node)
+    @emitter.emit("#{expression(node)};")
+  end
+
   def visit_call_node(node)
     @emitter.emit("#{expression(node)};")
   end

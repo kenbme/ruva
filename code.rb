@@ -30,4 +30,6 @@ def main
   2 + 2
 
   c = "aaa"
+
+  "bbbb"
 end
