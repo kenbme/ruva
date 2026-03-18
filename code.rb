@@ -3,12 +3,12 @@ def abacate
 end
 
 def main
-  a = 2 + 2
+  a = 2 + 2 + 2
   a = 2 - 2
   a = 2 * 2
   a = 2 / 2
   a = 2 % 2
-  a = 2 ** 2
+  a = 2 ** 2 - 2
   puts(a)
 
   abacate
