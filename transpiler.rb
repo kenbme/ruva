@@ -82,36 +82,37 @@ class Transpiler < Prism::Visitor
   RUVA_OPS = %i[puts gets]
 
   def visit_call_node(node)
-    expr = expression_call(node)
-
-    # Decide tipo de chamada
-    if MATH_OPS.include?(node.name)
-      @emitter.math_call(MATH_OPS.index(node.name), *node.receiver ? [expression(node.receiver), expression(node.arguments.arguments.first)] : [])
-    elsif RUVA_OPS.include?(node.name)
-      @emitter.ruva_call(node.name)
-    else
-      @emitter.local_call(node.name)
-    end
-
-    # Emitir argumentos
+    name = node.name
     args = node.arguments&.arguments || []
-    args.each_with_index do |a, i|
-      @emitter.emit_expression(expression(a))
-      @emitter.separator if i + 1 != args.size
-    end
 
-    @emitter.close_call
+    args_str = args.map { |arg| expression(arg) }.join(", ")
+
+    if RUVA_OPS.include?(name)
+      @emitter.emit "Ruva.puts(#{args_str});"
+    else
+      @emitter.emit "#{name}(#{args_str});"
+    end
   end
 
-  MATH_OPS = %i[+ - * / % **].freeze
-  MATH_OPS_NAME = %w[add sub mul div mod pow].freeze
+  MATH_OPS = %i[+ - * / % **]
+  MATH_OPS_NAME = %w[add sub mul div mod pow]
 
   def expression(node)
     case node
     when Prism::IntegerNode
       node.value
     when Prism::CallNode
-      expression_call(node)
+      if (op_idx = MATH_OPS.index(node.name))
+        left = expression(node.receiver)
+        right = expression(node.arguments.arguments.first)
+        op_name = MATH_OPS_NAME[op_idx]
+        "Ruva.#{op_name}(#{left}, #{right})"
+      else
+        name = node.name
+        args = node.arguments&.arguments || []
+        args_str = args.map { |arg| expression(arg) }.join(", ")
+        "#{name}(#{args_str})"
+      end
     when Prism::LocalVariableReadNode
       node.name
     when Prism::TrueNode
@@ -119,20 +120,6 @@ class Transpiler < Prism::Visitor
     else
       p node
       "/* unsupported */"
-    end
-  end
-
-  def expression_call(node)
-    name = node.name
-    args = node.arguments&.arguments || []
-
-    if (op_idx = MATH_OPS.index(name))
-      left = expression(node.receiver)
-      right = expression(args.first)
-      "Ruva.#{MATH_OPS_NAME[op_idx]}(#{left}, #{right})"
-    else
-      args_str = args.map { |arg| expression(arg) }.join(", ")
-      "#{name}(#{args_str})"
     end
   end
 end
