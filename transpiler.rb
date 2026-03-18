@@ -85,7 +85,11 @@ class Transpiler < Prism::Visitor
     name = node.name
     args = node.arguments&.arguments || []
 
-    if RUVA_OPS.include?(name)
+    if (op_idx = MATH_OPS.index(node.name))
+      left = expression(node.receiver)
+      right = expression(node.arguments.arguments.first)
+      @emitter.math_call(op_idx, left, right)
+    elsif RUVA_OPS.include?(name)
       @emitter.ruva_call(name)
     else
       @emitter.local_call(name)
@@ -105,24 +109,13 @@ class Transpiler < Prism::Visitor
   end
 
   MATH_OPS = %i[+ - * / % **]
-  MATH_OPS_NAME = %w[add sub mul div mod pow]
 
   def expression(node)
     case node
     when Prism::IntegerNode
       node.value
     when Prism::CallNode
-      if (op_idx = MATH_OPS.index(node.name))
-        left = expression(node.receiver)
-        right = expression(node.arguments.arguments.first)
-        op_name = MATH_OPS_NAME[op_idx]
-        "Ruva.#{op_name}(#{left}, #{right})"
-      else
-        name = node.name
-        args = node.arguments&.arguments || []
-        args_str = args.map { |arg| expression(arg) }.join(", ")
-        "#{name}(#{args_str})"
-      end
+      visit_call_node(node)
     when Prism::LocalVariableReadNode
       node.name
     when Prism::TrueNode
