@@ -1,58 +1,60 @@
 package com.ruva;
 
+import static com.ruva.Ruva.*;
+
 public class RuvaProgram
 {
   public static RuvaObject abacate()
   {
-    return Ruva.ruva_int(2);
+    return ruva_int(2);
   }
   public static RuvaObject abacateiro()
   {
-    return Ruva.ruva_str("aaaaaa");
+    return ruva_str("aaaaaa");
   }
   public static void main(String[] args)
   {
-    var a = Ruva.ruva_add(Ruva.ruva_add(Ruva.ruva_int(2),Ruva.ruva_int(2)),Ruva.ruva_int(2));
-    a = Ruva.ruva_sub(Ruva.ruva_int(2),Ruva.ruva_int(2));
-    a = Ruva.ruva_mul(Ruva.ruva_int(2),Ruva.ruva_int(2));
-    a = Ruva.ruva_div(Ruva.ruva_int(2),Ruva.ruva_int(2));
-    a = Ruva.ruva_mod(Ruva.ruva_int(2),Ruva.ruva_int(2));
-    a = Ruva.ruva_sub(Ruva.ruva_pow(Ruva.ruva_int(2),Ruva.ruva_int(2)),Ruva.ruva_int(2));
-    Ruva.ruva_puts(a);
+    var a = ruva_add(ruva_add(ruva_int(2),ruva_int(2)),ruva_int(2));
+    a = ruva_sub(ruva_int(2),ruva_int(2));
+    a = ruva_mul(ruva_int(2),ruva_int(2));
+    a = ruva_div(ruva_int(2),ruva_int(2));
+    a = ruva_mod(ruva_int(2),ruva_int(2));
+    a = ruva_sub(ruva_pow(ruva_int(2),ruva_int(2)),ruva_int(2));
+    ruva_puts(a);
     abacate();
     abacate();
-    if (Ruva.ruva_truthy(Ruva.ruva_true()))
+    if (ruva_truthy(ruva_true()))
     {
-      Ruva.ruva_puts(a,Ruva.ruva_int(2));
+      ruva_puts(a,ruva_int(2));
     }
-    else if (Ruva.ruva_truthy(Ruva.ruva_true()))
+    else if (ruva_truthy(ruva_true()))
     {
-      Ruva.ruva_puts(a);
+      ruva_puts(a);
     }
     else
     {
-      Ruva.ruva_puts(a);
+      ruva_puts(a);
     }
-    while (Ruva.ruva_truthy(Ruva.ruva_true()))
+    while (ruva_truthy(ruva_true()))
     {
       var b = abacate();
       break;
     }
-    while (Ruva.ruva_truthy(Ruva.ruva_false()))
+    while (ruva_truthy(ruva_false()))
     {
     }
-    while (Ruva.ruva_truthy(Ruva.ruva_nil()))
+    while (ruva_truthy(ruva_nil()))
     {
     }
-    Ruva.ruva_add(Ruva.ruva_int(2),Ruva.ruva_int(2));
-    var c = Ruva.ruva_str("aaa");
-    Ruva.ruva_str("bbbb");
-    var dd = Ruva.ruva_array();
-    var bb = Ruva.ruva_array(Ruva.ruva_int(1), Ruva.ruva_int(2), Ruva.ruva_int(3), Ruva.ruva_str("s"));
-    var bbb = Ruva.ruva_array(Ruva.ruva_int(1), Ruva.ruva_array(Ruva.ruva_int(2)));
-    var dado = Ruva.ruva_hash(Ruva.ruva_sym("aaaaaa"), Ruva.ruva_int(2), Ruva.ruva_sym("daaaaa"), Ruva.ruva_int(4));
-    Ruva.ruva_array(Ruva.ruva_int(1), Ruva.ruva_int(2));
-    Ruva.ruva_hash(Ruva.ruva_sym("a"), Ruva.ruva_int(1), Ruva.ruva_sym("b"), Ruva.ruva_int(2), Ruva.ruva_sym("c"), Ruva.ruva_hash(Ruva.ruva_sym("d"), Ruva.ruva_int(5)));
-    var daaaa = Ruva.ruva_gets();
+    ruva_add(ruva_int(2),ruva_int(2));
+    var c = ruva_str("aaa");
+    ruva_str("bbbb");
+    var dd = ruva_array();
+    var bb = ruva_array(ruva_int(1), ruva_int(2), ruva_int(3), ruva_str("s"));
+    var bbb = ruva_array(ruva_int(1), ruva_array(ruva_int(2)));
+    var dado = ruva_hash(ruva_sym("aaaaaa"), ruva_int(2), ruva_sym("daaaaa"), ruva_int(4));
+    ruva_array(ruva_int(1), ruva_int(2));
+    ruva_hash(ruva_sym("a"), ruva_int(1), ruva_sym("b"), ruva_int(2), ruva_sym("c"), ruva_hash(ruva_sym("d"), ruva_int(5)));
+    var daaaa = ruva_gets();
   }
 }

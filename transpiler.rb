@@ -151,32 +151,32 @@ class Transpiler < Prism::Visitor
   def expression(node)
     case node
     when Prism::IntegerNode
-      "Ruva.ruva_int(#{node.value})"
+      "ruva_int(#{node.value})"
 
     when Prism::StringNode
-      "Ruva.ruva_str(\"#{node.content}\")"
+      "ruva_str(\"#{node.content}\")"
 
     when Prism::LocalVariableReadNode
       node.name
 
     when Prism::TrueNode
-      "Ruva.ruva_true()"
+      "ruva_true()"
 
     when Prism::FalseNode
-      "Ruva.ruva_false()"
+      "ruva_false()"
 
     when Prism::NilNode
-      "Ruva.ruva_nil()"
+      "ruva_nil()"
 
     when Prism::CallNode
       build_call_expression(node)
 
     when Prism::ArrayNode
       elements = node.elements.map { |el| expression(el) }.join(", ")
-      "Ruva.ruva_array(#{elements})"
+      "Rruva_array(#{elements})"
 
     when Prism::SymbolNode
-      "Ruva.ruva_sym(#{"\"#{node.value}\""})"
+      "ruva_sym(#{"\"#{node.value}\""})"
 
     when Prism::HashNode
       pairs = node.elements.map do |assoc|
@@ -184,7 +184,7 @@ class Transpiler < Prism::Visitor
         value = expression(assoc.value)
         "#{key}, #{value}"
       end.join(", ")
-      "Ruva.ruva_hash(#{pairs})"
+      "ruva_hash(#{pairs})"
 
     else
       p node
