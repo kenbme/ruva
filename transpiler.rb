@@ -173,7 +173,7 @@ class Transpiler < Prism::Visitor
 
     when Prism::ArrayNode
       elements = node.elements.map { |el| expression(el) }.join(", ")
-      "Rruva_array(#{elements})"
+      "ruva_array(#{elements})"
 
     when Prism::SymbolNode
       "ruva_sym(#{"\"#{node.value}\""})"
