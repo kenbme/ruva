@@ -35,7 +35,7 @@ class Emitter
   end
 
   def start_if(condition)
-    emit "if (Ruva.truthy(#{condition}))"
+    emit "if (Ruva.ruva_truthy(#{condition}))"
     start_block
   end
 
@@ -44,7 +44,7 @@ class Emitter
   end
 
   def start_elsif(condition)
-    emit "else if (Ruva.truthy(#{condition}))"
+    emit "else if (Ruva.ruva_truthy(#{condition}))"
     start_block
   end
 
@@ -74,7 +74,7 @@ class Emitter
   end
 
   def start_while(condition)
-    emit "while (Ruva.truthy(#{condition}))"
+    emit "while (Ruva.ruva_truthy(#{condition}))"
     start_block
   end
 
@@ -87,11 +87,11 @@ class Emitter
   end
 
   def ruva_call_str(name, args_str)
-    "Ruva.#{name}(#{args_str})"
+    "Ruva.ruva_#{name}(#{args_str})"
   end
 
   def ruva_math(op, left, right)
-    emit "Ruva.#{op}(#{left}#{separator_str}#{right});"
+    emit "Ruva.ruva_#{op}(#{left}#{separator_str}#{right});"
   end
 
   def class_call(clazz, name, args_str)
@@ -103,7 +103,7 @@ class Emitter
   end
 
   def ruva_math_str(op, left, right)
-    "Ruva.#{op}(#{left}#{separator_str}#{right})"
+    "Ruva.ruva_#{op}(#{left}#{separator_str}#{right})"
   end
 
   def local_call_str(op, args_str)

@@ -32,33 +32,33 @@ public class Ruva {
 
     // ===== ARITMÉTICA =====
 
-    public static RuvaObject add(RuvaObject a, RuvaObject b) {
+    public static RuvaObject ruva_add(RuvaObject a, RuvaObject b) {
         return ruva_int(a.asInt() + b.asInt());
     }
 
-    public static RuvaObject sub(RuvaObject a, RuvaObject b) {
+    public static RuvaObject ruva_sub(RuvaObject a, RuvaObject b) {
         return ruva_int(a.asInt() - b.asInt());
     }
 
-    public static RuvaObject mul(RuvaObject a, RuvaObject b) {
+    public static RuvaObject ruva_mul(RuvaObject a, RuvaObject b) {
         return ruva_int(a.asInt() * b.asInt());
     }
 
-    public static RuvaObject div(RuvaObject a, RuvaObject b) {
+    public static RuvaObject ruva_div(RuvaObject a, RuvaObject b) {
         return ruva_int(a.asInt() / b.asInt());
     }
 
-    public static RuvaObject mod(RuvaObject a, RuvaObject b) {
+    public static RuvaObject ruva_mod(RuvaObject a, RuvaObject b) {
         return ruva_int(a.asInt() % b.asInt());
     }
 
-    public static RuvaObject pow(RuvaObject a, RuvaObject b) {
+    public static RuvaObject ruva_pow(RuvaObject a, RuvaObject b) {
         return ruva_int((int) Math.pow(a.asInt(), b.asInt()));
     }
 
     // ===== VERDADE =====
 
-    public static boolean truthy(RuvaObject obj) {
+    public static boolean ruva_truthy(RuvaObject obj) {
         if (obj.type == RuvaObject.Type.NIL) return false;
         if (obj.type == RuvaObject.Type.BOOL) return obj.asBool();
         return true;
@@ -66,21 +66,21 @@ public class Ruva {
 
     // ===== IO =====
 
-    public static void puts(RuvaObject... objs) {
+    public static void ruva_puts(RuvaObject... objs) {
         for (RuvaObject o : objs) {
             System.out.print(o + " ");
         }
         System.out.println();
     }
 
-    public static RuvaObject gets() {
+    public static RuvaObject ruva_gets() {
         Scanner sc = new Scanner(System.in);
         return ruva_str(sc.nextLine());
     }
 
     // ===== ARRAYS =====
 
-    public static RuvaObject array(RuvaObject... objs) {
+    public static RuvaObject ruva_array(RuvaObject... objs) {
         List<RuvaObject> list = new ArrayList<>();
         Collections.addAll(list, objs);
         return new RuvaObject(RuvaObject.Type.ARRAY, list);
@@ -88,7 +88,7 @@ public class Ruva {
 
     // ===== HASH =====
 
-    public static RuvaObject hash(RuvaObject... objs) {
+    public static RuvaObject ruva_hash(RuvaObject... objs) {
         Map<String, RuvaObject> map = new HashMap<>();
 
         for (int i = 0; i < objs.length; i += 2) {
